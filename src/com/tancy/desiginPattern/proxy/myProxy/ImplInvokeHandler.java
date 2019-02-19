@@ -2,6 +2,7 @@ package com.tancy.desiginPattern.proxy.myProxy;
 
 import com.tancy.desiginPattern.proxy.WineProduct;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -18,6 +19,14 @@ public class ImplInvokeHandler implements MyInvokeHandler {
 
     @Override
     public void inovke(Method method) {
-
+        System.out.println("ImplInvokeHandler begin");
+        try {
+            method.invoke(wp);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        System.out.println("ImplInvokeHandler end");
     }
 }
