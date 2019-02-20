@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,11 +47,13 @@ public class MyProxy {
         sb.append(TAB);
         sb.append("private MyInvokeHandler mi;");
         sb.append(ENTER);
+        sb.append(TAB);
         sb.append("public Mproxy(MyInvokeHandler mi){");
         sb.append(ENTER);
-        sb.append(TAB);
+        sb.append(TAB+TAB);
         sb.append("this.mi=mi;");
         sb.append(ENTER);
+        sb.append(TAB);
         sb.append("}");
         sb.append(ENTER);
         for (Class anInterface : interfaces) {
@@ -61,28 +66,28 @@ public class MyProxy {
 //                methodParams.append(","+types[i].getTypeName()+" param"+i);
 //            }
 
-                sb.append(TAB+TAB);
+                sb.append(TAB);
                 sb.append("public "+method.getReturnType().getSimpleName()+" "+method.getName()+" (){");
                 sb.append(ENTER);
-                sb.append(TAB+TAB+TAB);
+                sb.append(TAB+TAB);
                 sb.append("try {");
                 sb.append(ENTER);
-                sb.append(TAB+TAB+TAB+TAB);
+                sb.append(TAB+TAB+TAB);
                 sb.append("Method method="+anInterface.getName()+".class.getDeclaredMethod(\""+method.getName()+"\");");
                 sb.append(ENTER);
-                sb.append(TAB+TAB+TAB+TAB);
+                sb.append(TAB+TAB+TAB);
                 sb.append("mi.inovke(method);");
                 sb.append(ENTER);
-                sb.append(TAB+TAB+TAB);
+                sb.append(TAB+TAB);
                 sb.append("} catch (Exception e){");
                 sb.append(ENTER);
-                sb.append(TAB+TAB+TAB+TAB);
+                sb.append(TAB+TAB+TAB);
                 sb.append("e.printStackTrace();");
                 sb.append(ENTER);
-                sb.append(TAB+TAB+TAB);
+                sb.append(TAB+TAB);
                 sb.append("}");
                 sb.append(ENTER);
-                sb.append(TAB+TAB);
+                sb.append(TAB);
                 sb.append("}");
             }
         }
@@ -96,27 +101,35 @@ public class MyProxy {
         StandardJavaFileManager fileManager= compiler.getStandardFileManager(null,null,null);
         Iterable<? extends JavaFileObject> iterable= fileManager.getJavaFileObjects(file);
         JavaCompiler.CompilationTask task= compiler.getTask(null,fileManager,null,null,null,iterable);
-        task.call();
+        boolean success= task.call();
         try {
             fileManager.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            Class myProxyClzz= Class.forName("com.tancy.desiginPattern.proxy.myProxy.buildProxy.Mproxy");
-            Constructor constructor= myProxyClzz.getDeclaredConstructor(MyInvokeHandler.class);
-            return constructor.newInstance(invokeHandler);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+        if (success) {
+            try {
+                URLClassLoader classLoader= URLClassLoader.newInstance(new URL[]{new URL("file:"+System.getProperty("user.dir")+"\\src\\") });
+                Class myProxyClzz= classLoader.loadClass("com.tancy.desiginPattern.proxy.myProxy.buildProxy.Mproxy");
+                Constructor constructor= myProxyClzz.getDeclaredConstructor(MyInvokeHandler.class);
+                File file1=new File(file.getParent()+"/Mproxy.class");System.out.println(file1);
+                file1.delete();
+                return constructor.newInstance(invokeHandler);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
+
         return null;
     }
 

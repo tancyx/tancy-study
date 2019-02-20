@@ -21,6 +21,7 @@ public class ImplInvokeHandler implements MyInvokeHandler {
     public void inovke(Method method) {
         System.out.println("ImplInvokeHandler begin");
         try {
+            System.out.println(method);
             method.invoke(wp);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
