@@ -27,7 +27,7 @@ public class WatchThread extends Thread {
             WatchThread watchThread=new WatchThread();
             watchThread.setDaemon(true);
             watchThread.start();
-            Thread.sleep(100);
+            Thread.sleep(10);
             System.out.println("我离开thread对象也不再打印了，也就是停止了！");
         } catch (InterruptedException e) {
             e.printStackTrace();

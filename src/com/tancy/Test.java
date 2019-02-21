@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Test {
@@ -55,12 +56,30 @@ public class Test {
         }
         System.out.println(Files.exists(path));
 
+
+        System.out.println(Arrays.toString(twoSum(new int []{3,3},6)));
+
     }
 
 
     public static int hashx(java.lang.Object key) {
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+
+    public static int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> map=new HashMap();
+        map.put(nums[0],0);
+        for (int i = 1; i < nums.length; i++) {
+            map.put(nums[i], i);
+            int another=target-nums[i];
+            boolean flag=map.containsKey(another);
+            int index=map.get(another);
+            if (flag&&index!=i) {
+                return new int[]{map.get(another),i};
+            }
+        }
+        return new int[]{0,0};
     }
 
 }
