@@ -20,9 +20,6 @@ public class ZipUtil {
 
     private HashMap<String,List<Path>> zipFile=new HashMap<>(defaultCapacity);
 
-    public ZipUtil() {
-    }
-
     public ZipUtil(String sourceFile, String targetFile) {
         this.sourceFile = Paths.get(sourceFile).toFile();
         this.targetFile = Paths.get(targetFile).toFile();
@@ -55,6 +52,10 @@ public class ZipUtil {
         }
     }
 
+    /**
+     * 创建压缩包的存放路径
+     * @return path 压缩包存放的目标路径
+     */
     private Path zipDiretory(){
         try {
             Path newpath= Files.createDirectories(targetFile.toPath());
@@ -65,6 +66,11 @@ public class ZipUtil {
         return null;
     }
 
+    /**
+     *
+     * @param zipName 压缩包名称
+     * @return path 文件的path
+     */
     private Path zipFilename(String zipName){
         Path path= zipDiretory();
         StringBuffer sb=new StringBuffer(path.toString());
@@ -79,7 +85,9 @@ public class ZipUtil {
         return null;
     }
 
-
+    /**
+     * 将zipFile中的所有文件压缩为zip
+     */
     private void createZip(){
         Set set=zipFile.entrySet();
         Iterator itr=set.iterator();
@@ -95,26 +103,20 @@ public class ZipUtil {
                 for (Path path : fileList) {
                     InputStream is = null;
                     byte[] buf = new byte[1024];
-                    try {
-                        zos.putNextEntry(new ZipEntry(path.toFile().getName()));
-                        is = Files.newInputStream(path, StandardOpenOption.READ);
-                        int len;
-                        while ((len = is.read(buf)) > 0) {
-                            zos.write(buf, 0, len);
-                            zos.flush();
-                        }
-                        zos.closeEntry();
-                        is.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    zos.putNextEntry(new ZipEntry(path.toFile().getName()));
+                    is = Files.newInputStream(path, StandardOpenOption.READ);
+                    int len;
+                    while ((len = is.read(buf)) > 0) {
+                        zos.write(buf, 0, len);
+                        zos.flush();
                     }
-
+                    zos.closeEntry();
+                    is.close();
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }finally {
-                System.out.println("close zos");
                 try {
                     if (zos != null) {
                         zos.close();

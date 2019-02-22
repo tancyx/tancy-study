@@ -8,7 +8,7 @@ package com.tancy.zip;
 public class Test {
 
     public static void main(String[] args) {
-        ZipUtil zu=new ZipUtil("C:\\Users\\YX\\Desktop\\对账单测试数据","C:\\Users\\YX\\Desktop\\tmepzip\\");
+        ZipUtil zu=new ZipUtil("C:\\Users\\YX\\Desktop\\对账单测试数据\\201901","C:\\Users\\YX\\Desktop\\tmepzip\\");
         zu.doZip();
     }
 
