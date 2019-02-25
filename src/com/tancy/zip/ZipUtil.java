@@ -17,6 +17,9 @@ public class ZipUtil {
     private static final int defaultCapacity=1<<7;
     private File sourceFile;
     private File targetFile;
+    private int totalFiles=0;
+    private int zipsDone=0;
+    private boolean walkFileDone=false;
 
     private HashMap<String,List<Path>> zipFile=new HashMap<>(defaultCapacity);
 
@@ -31,6 +34,7 @@ public class ZipUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        walkFileDone=true;
         createZip();
     }
 
@@ -41,6 +45,7 @@ public class ZipUtil {
 
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            totalFiles++;
             String zipName= file.getParent().getParent().relativize(file.getParent()).toString();
             if (!zipName.equals(preName)){
                 paths=new ArrayList<>();
@@ -112,6 +117,7 @@ public class ZipUtil {
                     }
                     zos.closeEntry();
                     is.close();
+                    zipsDone++;
                 }
 
             } catch (IOException e) {
@@ -128,4 +134,15 @@ public class ZipUtil {
         }
     }
 
+    public int getTotalFiles() {
+        return totalFiles;
+    }
+
+    public int getZipsDone() {
+        return zipsDone;
+    }
+
+    public boolean isWalkFileDone() {
+        return walkFileDone;
+    }
 }
