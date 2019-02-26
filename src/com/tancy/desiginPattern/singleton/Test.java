@@ -7,5 +7,13 @@ public class Test {
         System.out.println(lazySingleton1);
         LazySingleton lazySingleton2 =LazySingleton.getInstance();
         System.out.println(lazySingleton2);
+
+        InstanceThread thread=new InstanceThread();
+        thread.start();
+        LazySingletonSync lazySingletonSync1=LazySingletonSync.getInstance();
+        System.out.println(lazySingletonSync1);
+
+
+
     }
 }

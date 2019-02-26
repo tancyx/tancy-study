@@ -1,9 +1,6 @@
 package com.tancy.zip;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.plaf.ProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +19,7 @@ public class ZipUi {
 
         JFrame jf=new JFrame("author tancy");
         jf.setBounds(600,300,600,400);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GridBagLayout gridBagLayout=new GridBagLayout();
         GridBagConstraints constraints=new GridBagConstraints();
