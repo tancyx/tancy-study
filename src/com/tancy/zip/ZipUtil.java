@@ -107,17 +107,22 @@ public class ZipUtil {
                 List<Path> fileList= (List<Path>) entry.getValue();
                 for (Path path : fileList) {
                     InputStream is = null;
-                    byte[] buf = new byte[1024];
-                    zos.putNextEntry(new ZipEntry(path.toFile().getName()));
-                    is = Files.newInputStream(path, StandardOpenOption.READ);
-                    int len;
-                    while ((len = is.read(buf)) > 0) {
-                        zos.write(buf, 0, len);
-                        zos.flush();
+                    try {
+                        byte[] buf = new byte[1024];
+                        zos.putNextEntry(new ZipEntry(path.toFile().getName()));
+                        is = Files.newInputStream(path, StandardOpenOption.READ);
+                        int len;
+                        while ((len = is.read(buf)) > 0) {
+                            zos.write(buf, 0, len);
+                            zos.flush();
+                        }
+                        zipsDone++;
+                        zos.closeEntry();
+                    } finally {
+                        if (is!=null){
+                            is.close();
+                        }
                     }
-                    zos.closeEntry();
-                    is.close();
-                    zipsDone++;
                 }
 
             } catch (IOException e) {

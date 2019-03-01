@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author tancy
- * @description description
+ * @description ReentrantLock 为排它锁，即同一时刻只允许一个线程访问
  * @date 2019/2/27 16:13
  **/
 public class ReentranLockTest {
