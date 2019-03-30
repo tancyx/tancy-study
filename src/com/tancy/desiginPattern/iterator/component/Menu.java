@@ -19,7 +19,7 @@ public class Menu extends MenuComponent {
 
     @Override
     public void add(MenuComponent menuComponent) {
-        super.add(menuComponent);
+        componentList.add(menuComponent);
     }
 
     @Override
