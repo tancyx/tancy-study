@@ -1,6 +1,7 @@
 package com.tancy.desiginPattern.iterator.component;
 
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -49,8 +50,10 @@ public class Menu extends MenuComponent {
                 ", description='" + description + '\'' +
                 ", componentList=" + componentList +
                 '}');
-        for (MenuComponent menuComponent : componentList) {
-            menuComponent.print();
+        Iterator<MenuComponent> itr = componentList.iterator();
+        while (itr.hasNext()){
+            MenuComponent mc = itr.next();
+            mc.print();
         }
     }
 
