@@ -1,6 +1,7 @@
 package com.tancy.desiginPattern.iterator.component;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,10 +13,12 @@ import java.util.List;
 public class Menu extends MenuComponent {
     private String name;
     private String description;
-    List<MenuComponent> componentList;
+    ArrayList<MenuComponent> componentList = new ArrayList<>();
 
-    public Menu(List<MenuComponent> componentList) {
-        this.componentList = componentList;
+
+    public Menu(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     @Override
@@ -57,4 +60,13 @@ public class Menu extends MenuComponent {
         }
     }
 
+    @Override
+    public Iterator createIterator() {
+        return new CompositeIterator(componentList.iterator());
+    }
+
+    @Override
+    public boolean isVegetarian() {
+        throw new UnsupportedOperationException();
+    }
 }

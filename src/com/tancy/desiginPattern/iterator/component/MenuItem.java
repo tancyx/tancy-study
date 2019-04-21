@@ -1,5 +1,7 @@
 package com.tancy.desiginPattern.iterator.component;
 
+import java.util.Iterator;
+
 /**
  * @author tancy
  * @description description
@@ -10,6 +12,13 @@ public class MenuItem extends MenuComponent {
     private String description;
     private double price;
     private boolean vegetarian;
+
+    public MenuItem(String name, String description, double price, boolean vegetarian) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.vegetarian = vegetarian;
+    }
 
     @Override
     public String getName() {
@@ -41,4 +50,8 @@ public class MenuItem extends MenuComponent {
                 '}');
     }
 
+    @Override
+    public Iterator createIterator() {
+        return new NullIterator();
+    }
 }

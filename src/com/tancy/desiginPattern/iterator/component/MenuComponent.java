@@ -1,5 +1,7 @@
 package com.tancy.desiginPattern.iterator.component;
 
+import java.util.Iterator;
+
 /**
  * @author tancy
  * @description 组合模式 顶层接口
@@ -38,5 +40,7 @@ public abstract class MenuComponent {
     public void print(){
         throw new UnsupportedOperationException();
     }
+
+    public abstract Iterator createIterator();
 
 }
